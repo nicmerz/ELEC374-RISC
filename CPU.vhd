@@ -52,6 +52,9 @@ signal internalBusMuxOut : std_logic_vector(31 downto 0);
 ---- Default ----
 signal defaultSig : std_logic_vector(31 downto 0);
 
+---- MDR Mux Signal, set to 0 to always accept BusMuxOut for now ----
+signal MDRRead : std_logic;
+
 begin
 
 ---- Set default values, to get rid of compiler warnings ----
@@ -60,6 +63,8 @@ BusMuxIn_Zlow <= (others => '0');
 BusMuxIn_Inport <= (others => '0');
 C_sign_extended <= (others => '0');
 defaultSig <= (others => '0');
+
+MDRRead <= '0';
 
 -- ...................  CLK  RESET_N  EN                 D              			Q ........... 
 
@@ -82,7 +87,9 @@ R15 	: reg32 port map (clk, reset_n, RegEnableIn(15),	internalBusMuxOut,  		BusM
 HI 	: reg32 port map (clk, reset_n, RegEnableIn(16),	internalBusMuxOut, 		BusMuxIn_HI);
 LO 	: reg32 port map (clk, reset_n, RegEnableIn(17),	internalBusMuxOut, 		BusMuxIn_LO);
 PC 	: reg32 port map (clk, reset_n, RegEnableIn(18),	internalBusMuxOut,     	BusMuxIn_PC);
-MDR	: reg32 port map (clk, reset_n, RegEnableIn(19),	internalBusMuxOut,   	BusMuxIn_MDR);
+
+---- MDR Register ----
+MDR	: regMDR port map (clk, reset_n, RegEnableIn(19),	MDRRead, internalBusMuxOut, defaultSig, BusMuxIn_MDR);
 
 ---- Instantiate Encoder and Mux ----
 CPUBus : myBus port map (BusMuxIn_R0, BusMuxIn_R1, BusMuxIn_R2, BusMuxIn_R3, BusMuxIn_R4, BusMuxIn_R5, BusMuxIn_R6, BusMuxIn_R7, BusMuxIn_R8, BusMuxIn_R9, BusMuxIn_R10, BusMuxIn_R11, BusMuxIn_R12, BusMuxIn_R13,
