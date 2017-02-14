@@ -152,4 +152,24 @@ package my_components is
 		);
 	end component;
 	
+	component CLA
+		port(
+			x   : in  std_logic_vector(15 downto 0);
+			y   : in  std_logic_vector(15 downto 0);
+			c0  : in  std_logic;
+			c16 : out std_logic;
+			s : out std_logic_vector(15 downto 0)
+		);
+	end component;
+	
+	component lpm_add_sub0
+		PORT
+		(
+			add_sub		: IN STD_LOGIC ;
+			dataa		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			datab		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			overflow		: OUT STD_LOGIC ;
+			result		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+		);
+	end component;
 end package;
