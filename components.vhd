@@ -172,4 +172,72 @@ package my_components is
 			result		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
 		);
 	end component;
+	
+	component boothMul
+		port(
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			output : out std_logic_vector(63 downto 0)
+		);
+	end component;
+	
+	component lpm_divide0
+		PORT
+		(
+			denom		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			numer		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			quotient		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+			remain		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+		);
+	end component;
+	
+	component shr32
+		port(
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			-- 32 bits of output
+			output : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component shl32
+		port(
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			-- 32 bits of output
+			output : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component ror32
+		port(
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			-- 32 bits of output
+			output : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component rol32
+		port(
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			-- 32 bits of output
+			output : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component neg32
+		port(
+			-- 2 32 bits of input
+			input: in std_logic_vector(31 downto 0);
+			-- 32 bits of output
+			output : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
 end package;
