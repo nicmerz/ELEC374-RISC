@@ -240,4 +240,18 @@ package my_components is
 		);
 	end component;
 	
+	component alu
+		port(
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			-- opcode input
+			opInput : in std_logic_vector(4 downto 0);
+			-- Overflow out
+			overflow : out std_logic;
+			-- 32 bits of output
+			output : out std_logic_vector(63 downto 0)
+		);
+	end component;
+	
 end package;
