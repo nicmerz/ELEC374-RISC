@@ -254,4 +254,24 @@ package my_components is
 		);
 	end component;
 	
+	component aluPath
+		port(
+			clk : in std_logic;
+			clr : in std_logic;
+			yIn : in std_logic;
+			zIn : in std_logic;
+			-- 2 32 bits of input
+			input0 : in std_logic_vector(31 downto 0);
+			input1 : in std_logic_vector(31 downto 0);
+			IncPC	 : in std_logic;
+			-- opcode input
+			opInput : in std_logic_vector(4 downto 0);
+			-- Overflow out
+			overflow : out std_logic;
+			-- 32 bits of output
+			outputHi	 : out std_logic_vector(31 downto 0);
+			outputLow : out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
 end package;
