@@ -46,7 +46,7 @@ signal negOut	: std_logic_vector(31 downto 0);
 begin
 aluAnd 	: and32 port map (input0, input1, andOut);
 aluOr 	: or32 port map (input0, input1, orOut);
-aluNot 	: not32 port map (input0, notOut);
+aluNot 	: not32 port map (input1, notOut);
 aluCLA	: CLA port map (input0(15 downto 0), input1(15 downto 0), CLAc0, CLAOverflow, CLAOut);
 aluAddSub : lpm_add_sub0 port map (addSubSignal, input0, input1, addSubOverflow, addSubOut);
 aluMul	: boothMul port map (input0, input1, mulOut);
@@ -55,7 +55,7 @@ aluShr	: shr32 port map (input0, input1, shrOut);
 aluShl	: shl32 port map (input0, input1, shlOut);
 aluRor	: ror32 port map (input0, input1, rorOut);
 aluRol	: rol32 port map (input0, input1, rolOut);
-aluNeg	: neg32 port map (input0, negOut);
+aluNeg	: neg32 port map (input1, negOut);
 
 CLAc0 <= '0';
 
