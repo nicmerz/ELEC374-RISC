@@ -14,6 +14,27 @@ signal encoderIn_tb	: std_logic_vector(31 downto 0);
 signal RegEnable_tb		: std_logic_vector(31 downto 0);
 signal Mdatain_tb, BusMuxOut_tb	: std_logic_vector(31 downto 0);
 
+signal R0out_tb			: std_logic_vector(31 downto 0);
+signal R1out_tb			: std_logic_vector(31 downto 0);
+signal R2out_tb			: std_logic_vector(31 downto 0);
+signal R3out_tb			: std_logic_vector(31 downto 0);
+signal R4out_tb			: std_logic_vector(31 downto 0);
+signal R5out_tb			: std_logic_vector(31 downto 0);
+signal R6out_tb			: std_logic_vector(31 downto 0);
+signal R7out_tb			: std_logic_vector(31 downto 0);
+signal R8out_tb			: std_logic_vector(31 downto 0);
+signal R9out_tb			: std_logic_vector(31 downto 0);
+signal R10out_tb		: std_logic_vector(31 downto 0);
+signal R11out_tb		: std_logic_vector(31 downto 0);
+signal R12out_tb		: std_logic_vector(31 downto 0);
+signal R13out_tb		: std_logic_vector(31 downto 0);
+signal R14out_tb		: std_logic_vector(31 downto 0);
+signal R15out_tb		: std_logic_vector(31 downto 0);
+signal HIout_tb		: std_logic_vector(31 downto 0);
+signal LOout_tb		: std_logic_vector(31 downto 0);
+signal IRout_tb		: std_logic_vector(31 downto 0);
+signal Zout_tb			: std_logic_vector(63 downto 0);
+
 signal dummyInput_tb : std_logic_vector(31 downto 0);
 
 type	state is(default, Reg_load1, Reg_load2, Reg_load3, T0, T1, T2, T3, T4, T5);
@@ -31,12 +52,32 @@ component datapath
 		dummyInput	: in std_logic_vector(31 downto 0);
 		MDRRead		: in std_logic;
 		aluOp			: in std_logic_vector(4 downto 0);
-		BusMuxOut	: out std_logic_vector(31 downto 0)
+		BusMuxOut	: out std_logic_vector(31 downto 0);
+		R0out			: out std_logic_vector(31 downto 0);
+		R1out			: out std_logic_vector(31 downto 0);
+		R2out			: out std_logic_vector(31 downto 0);
+		R3out			: out std_logic_vector(31 downto 0);
+		R4out			: out std_logic_vector(31 downto 0);
+		R5out			: out std_logic_vector(31 downto 0);
+		R6out			: out std_logic_vector(31 downto 0);
+		R7out			: out std_logic_vector(31 downto 0);
+		R8out			: out std_logic_vector(31 downto 0);
+		R9out			: out std_logic_vector(31 downto 0);
+		R10out		: out std_logic_vector(31 downto 0);
+		R11out		: out std_logic_vector(31 downto 0);
+		R12out		: out std_logic_vector(31 downto 0);
+		R13out		: out std_logic_vector(31 downto 0);
+		R14out		: out std_logic_vector(31 downto 0);
+		R15out		: out std_logic_vector(31 downto 0);
+		HIout			: out std_logic_vector(31 downto 0);
+		LOout			: out std_logic_vector(31 downto 0);
+		IRout			: out std_logic_vector(31 downto 0);
+		Zout			: out std_logic_vector(63 downto 0)
 	);
 end component;
 
 begin
-datapathTest : datapath port map (clk_tb, clr_tb, IncPC_tb, encoderIn_tb, RegEnable_tb, Mdatain_tb, dummyInput_tb, MDRRead_tb, SHR_tb, BusMuxOut_tb);
+datapathTest : datapath port map (clk_tb, clr_tb, IncPC_tb, encoderIn_tb, RegEnable_tb, Mdatain_tb, dummyInput_tb, MDRRead_tb, SHR_tb, BusMuxOut_tb, R0out_tb, R1out_tb, R2out_tb, R3out_tb, R4out_tb, R5out_tb, R6out_tb, R7out_tb, R8out_tb, R9out_tb, R10out_tb, R11out_tb, R12out_tb, R13out_tb, R14out_tb, R15out_tb, HIout_tb, LOout_tb, IRout_tb, Zout_tb);
 
 clk_process: process
 begin
