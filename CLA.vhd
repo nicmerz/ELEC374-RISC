@@ -128,7 +128,7 @@ G3 <= (g30 and p31 and p32 and p33) or (g31 and p32 and p33) or (g32 and p33) or
 
 c01 <= (c0 and p00) or g00;
 c02 <= (c0 and p00 and p01) or (g00 and p01) or g01;
-c03 <= (c0 and p00 and p01 and p02) or (g00 and p01 and p02) or (g01 and p02) or g03;
+c03 <= (c0 and p00 and p01 and p02) or (g00 and p01 and p02) or (g01 and p02) or g02;
 s(0) <= p00 xor c0;
 s(1) <= p01 xor c01;
 s(2) <= p02 xor c02;
@@ -136,7 +136,7 @@ s(3) <= p03 xor c03;
 -- 2nd 4-bit adder
 c11 <= (c4 and p10) or g10;
 cs12 <= (c4 and p10 and p11) or (g10 and p11) or g11;
-c13 <= (c4 and p10 and p11 and p12) or (g10 and p11 and p12) or (g11 and p12) or g13;
+c13 <= (c4 and p10 and p11 and p12) or (g10 and p11 and p12) or (g11 and p12) or g12;
 s(4) <= p10 xor c4;
 s(5) <= p11 xor c11;
 s(6) <= p12 xor cs12;
@@ -144,7 +144,7 @@ s(7) <= p13 xor c13;
 -- 3rd 4-bit adder
 c21 <= (c8 and p20) or g20;
 c22 <= (c8 and p20 and p21) or (g20 and p21) or g21;
-c23 <= (c8 and p20 and p21 and p22) or (g20 and p21 and p22) or (g21 and p22) or g23;
+c23 <= (c8 and p20 and p21 and p22) or (g20 and p21 and p22) or (g21 and p22) or g22;
 s(8) <= p20 xor c8;
 s(9) <= p21 xor c21;
 s(10) <= p22 xor c22;
@@ -153,7 +153,7 @@ s(11) <= p23 xor c23;
 
 c31 <= (c12 and p30) or g30;
 c32 <= (c12 and p30 and p31) or (g30 and p31) or g31;
-c33 <= (c12 and p30 and p31 and p32) or (g30 and p31 and p32) or (g31 and p32) or g33;
+c33 <= (c12 and p30 and p31 and p32) or (g30 and p31 and p32) or (g31 and p32) or g32;
 s(12) <= p30 xor c12;
 s(13) <= p31 xor c31;
 s(14) <= p32 xor c32;
@@ -163,7 +163,7 @@ s(15) <= p33 xor c33;
 
 c4 <= (c0 and P0) or G0;
 c8 <= (c0 and P0 and P1) or (G0 and P1) or G1;
-c12 <= (c0 and P0 and P1 and P2) or (G0 and P1 and P2) or (G1 and P2) or G3;
+c12 <= (c0 and P0 and P1 and P2) or (G0 and P1 and P2) or (G1 and P2) or G2;
 
 Pout <= P0 and P1 and P2 and P3;
 Gout <=(G0 and P1 and P2 and P3) or (G1 and P2 and P3) or (G2 and P3) or G3;
