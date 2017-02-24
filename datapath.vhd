@@ -16,7 +16,30 @@ entity datapath is
 		dummyInput	: in std_logic_vector(31 downto 0);
 		MDRRead		: in std_logic;
 		aluOp			: in std_logic_vector(4 downto 0);
-		BusMuxOut	: out std_logic_vector(31 downto 0)
+		
+		---- Outputports for testing purposes ----
+		BusMuxOut	: out std_logic_vector(31 downto 0);
+		R0out			: out std_logic_vector(31 downto 0);
+		R1out			: out std_logic_vector(31 downto 0);
+		R2out			: out std_logic_vector(31 downto 0);
+		R3out			: out std_logic_vector(31 downto 0);
+		R4out			: out std_logic_vector(31 downto 0);
+		R5out			: out std_logic_vector(31 downto 0);
+		R6out			: out std_logic_vector(31 downto 0);
+		R7out			: out std_logic_vector(31 downto 0);
+		R8out			: out std_logic_vector(31 downto 0);
+		R9out			: out std_logic_vector(31 downto 0);
+		R10out		: out std_logic_vector(31 downto 0);
+		R11out		: out std_logic_vector(31 downto 0);
+		R12out		: out std_logic_vector(31 downto 0);
+		R13out		: out std_logic_vector(31 downto 0);
+		R14out		: out std_logic_vector(31 downto 0);
+		R15out		: out std_logic_vector(31 downto 0);
+		HIout			: out std_logic_vector(31 downto 0);
+		LOout			: out std_logic_vector(31 downto 0);
+		IRout			: out std_logic_vector(31 downto 0);
+		Zout			: out std_logic_vector(63 downto 0)
+
 	);
 end entity;
 
@@ -89,7 +112,7 @@ LO 	: reg32 port map (clk, clr, RegEnableIn(17),	internalBusMuxOut, 		BusMuxIn_L
 PC 	: reg32 port map (clk, clr, RegEnableIn(18),	internalBusMuxOut,     	BusMuxIn_PC);
 
 ---- IR Register ----
-IR		: reg32 port map (clk, clr, RegEnableIn(19), internalBusMuxOut, open);
+IR		: reg32 port map (clk, clr, RegEnableIn(19), internalBusMuxOut, IRout);
 
 ---- MDR Register ----
 MDR	: regMDR port map (clk, clr, RegEnableIn(20),	MDRRead, internalBusMuxOut, Mdatain, BusMuxIn_MDR);
@@ -135,5 +158,26 @@ RegEnableIn(23), -- Zin
 internalBusMuxOut, internalBusMuxOut, IncPC, aluOp, overflow, BusMuxIn_Zhigh, BusMuxIn_Zlow);
 
 BusMuxOut <= internalBusMuxOut;
+R0out <= BusMuxIn_R0;
+R1out <= BusMuxIn_R1;
+R2out <= BusMuxIn_R2;
+R3out <= BusMuxIn_R3;
+R4out <= BusMuxIn_R4;
+R5out <= BusMuxIn_R5;
+R6out <= BusMuxIn_R6;
+R7out <= BusMuxIn_R7;
+R8out <= BusMuxIn_R8;
+R9out <= BusMuxIn_R9;
+R10out <= BusMuxIn_R10;
+R11out <= BusMuxIn_R11;
+R12out <= BusMuxIn_R12;
+R13out <= BusMuxIn_R13;
+R14out <= BusMuxIn_R14;
+R15out <= BusMuxIn_R15;
+HIout <= BusMuxIn_HI;
+LOout <= BusMuxIn_LO;
+Zout(63 downto 32) <= BusMuxIn_Zhigh;
+Zout(31 downto 0) <= BusMuxIn_Zlow;
+
 
 end architecture;
