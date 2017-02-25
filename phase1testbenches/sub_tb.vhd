@@ -149,7 +149,7 @@ begin
 			RegEnable_tb <= (18 => '1', 20 => '1', others => '0');
 			IncPC_tb <= '0';
 			MDRRead_tb <= '1';
-			Mdatain_tb <= x"294c0000";
+			Mdatain_tb <= x"30228000";
 		when T2 =>
 			MDRRead_tb <= '0';
 			Mdatain_tb <= (others => '0');
