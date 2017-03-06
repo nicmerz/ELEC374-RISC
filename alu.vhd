@@ -53,8 +53,8 @@ aluMul	: boothMul port map (input0, input1, mulOut);
 aluDiv	: lpm_divide0 port map (input1, input0, divOut(31 downto 0), divOut(63 downto 32));
 aluShr	: shr32 port map (input0, input1, shrOut);
 aluShl	: shl32 port map (input0, input1, shlOut);
-aluRor	: ror32 port map (input0, input1, rorOut);
-aluRol	: rol32 port map (input0, input1, rolOut);
+aluRor	: ror32 port map (input0, input1(4 downto 0), rorOut);
+aluRol	: rol32 port map (input0, input1(4 downto 0), rolOut);
 aluNeg	: neg32 port map (input1, negOut);
 
 CLAc0 <= '0';
