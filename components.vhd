@@ -272,4 +272,55 @@ package my_components is
 		);
 	end component;
 	
+	component RAM512
+		port
+		(
+			data	: in std_logic_vector(31 downto 0);
+			address	: in std_logic_vector(8 downto 0);
+			wren	: in std_logic;
+			rden	: in std_logic;
+			q	: out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component selectencode
+		port
+		(
+			IRin	: in std_logic_vector(31 downto 0);
+			Gra	: in std_logic;
+			Grb	: in std_logic;
+			Grc	: in std_logic;
+			Rin	: in std_logic;
+			Rout	: in std_logic;
+			Baout	: in std_logic;
+			Routvect : out std_logic_vector(15 downto 0);
+			Rinvect	: out std_logic_vector(15 downto 0);
+			Cextendedout	: out std_logic_vector(31 downto 0)
+		);
+	end component;
+	
+	component r0
+		port(
+			-- clock, (active low) reset, and load enable
+			clk : in std_logic;
+			clr : in std_logic;
+			load_en : in std_logic;
+			-- 32 bits of input
+			d : in std_logic_vector(31 downto 0);
+			BAout : in std_logic;
+			R0_output : out std_logic_vector(31 downto 0)
+			
+		);
+	end component;
+	
+	component ConFF
+		port(
+			clk : in std_logic;
+			IRbits   : in  std_logic_vector(1 downto 0);
+			busmuxbits   : in  std_logic_vector(31 downto 0);
+			q	: out std_logic;
+			CONin : in std_logic
+		);
+	end component;
+	
 end package;

@@ -9,13 +9,22 @@ entity datapath is
 		clk			: in std_logic;
 		clr		: in std_logic;
 		IncPC			: in std_logic;
-		encoderIn	: in std_logic_vector(31 downto 0);
-		RegEnableIn : in std_logic_vector(31 downto 0);
-		Mdatain 		: in std_logic_vector(31 downto 0);
+		encoderIn	: in std_logic_vector(15 downto 0);
+		RegEnableIn : in std_logic_vector(15 downto 0);
 		---- The purpose of this input is for testbenching; it can easily set initial register values ----
 		dummyInput	: in std_logic_vector(31 downto 0);
 		MDRRead		: in std_logic;
+		MDRWrite		: in std_logic;
+		Baout			: in std_logic;
+		Gra			: in std_logic;
+		Grb			: in std_logic;
+		Grc			: in std_logic;
+		Rin			: in std_logic;
+		Rout			: in std_logic;
 		aluOp			: in std_logic_vector(4 downto 0);
+		inport		: in std_logic_vector(31 downto 0);
+		outport		: out std_logic_vector(31 downto 0);
+		conffout		: out std_logic;
 		
 		---- Outputports for testing purposes ----
 		BusMuxOut	: out std_logic_vector(31 downto 0);
@@ -82,44 +91,74 @@ signal defaultSig : std_logic_vector(31 downto 0);
 ---- ALU-Related Signals ----
 signal overflow : std_logic;
 
+---- Memory-Related Signals ----
+signal MARout	: std_logic_vector(31 downto 0);
+signal RAMout	: std_logic_vector(31 downto 0);
+
+---- Select and Encode Signals
+signal internalEncoderIn	: std_logic_vector(31 downto 0);
+signal internalRegEnableIn : std_logic_vector(31 downto 0);
+signal internalIRout			: std_logic_vector(31 downto 0);
+
 begin
 
 ---- Set default values, to get rid of compiler warnings ----
-BusMuxIn_Inport <= (others => '0');
-C_sign_extended <= (others => '0');
 defaultSig <= (others => '0');
+		
+reg0 	: r0 port map (clk, clr, internalRegEnableIn(0), internalBusMuxOut, Baout, BusMuxIn_R0);
 
--- ...................  CLK  clr  EN                 D              			Q ........... 
+-- ...................  CLK  clr  EN									D              			Q ........... 
 
-R0 	: reg32 port map (clk, clr, RegEnableIn(0),		internalBusMuxOut,  	   BusMuxIn_R0);
-R1		: reg32 port map (clk, clr, RegEnableIn(1),		internalBusMuxOut,    	BusMuxIn_R1);
-R2 	: reg32 port map (clk, clr, RegEnableIn(2),		internalBusMuxOut,   	BusMuxIn_R2);
-R3 	: reg32 port map (clk, clr, RegEnableIn(3),		internalBusMuxOut,   	BusMuxIn_R3);
-R4 	: reg32 port map (clk, clr, RegEnableIn(4),		internalBusMuxOut,   	BusMuxIn_R4);
-R5 	: reg32 port map (clk, clr, RegEnableIn(5),		internalBusMuxOut,   	BusMuxIn_R5);
-R6 	: reg32 port map (clk, clr, RegEnableIn(6),		internalBusMuxOut,   	BusMuxIn_R6);
-R7 	: reg32 port map (clk, clr, RegEnableIn(7),		internalBusMuxOut,   	BusMuxIn_R7);
-R8 	: reg32 port map (clk, clr, RegEnableIn(8),		internalBusMuxOut,   	BusMuxIn_R8);
-R9 	: reg32 port map (clk, clr, RegEnableIn(9),		internalBusMuxOut,  		BusMuxIn_R9);
-R10 	: reg32 port map (clk, clr, RegEnableIn(10),	internalBusMuxOut,  		BusMuxIn_R10);
-R11 	: reg32 port map (clk, clr, RegEnableIn(11),	internalBusMuxOut,  		BusMuxIn_R11);
-R12 	: reg32 port map (clk, clr, RegEnableIn(12),	internalBusMuxOut,  		BusMuxIn_R12);
-R13 	: reg32 port map (clk, clr, RegEnableIn(13),	internalBusMuxOut,  		BusMuxIn_R13);
-R14 	: reg32 port map (clk, clr, RegEnableIn(14),	internalBusMuxOut,  		BusMuxIn_R14);
-R15 	: reg32 port map (clk, clr, RegEnableIn(15),	internalBusMuxOut,  		BusMuxIn_R15);
-HI 	: reg32 port map (clk, clr, RegEnableIn(16),	internalBusMuxOut, 		BusMuxIn_HI);
-LO 	: reg32 port map (clk, clr, RegEnableIn(17),	internalBusMuxOut, 		BusMuxIn_LO);
-PC 	: reg32 port map (clk, clr, RegEnableIn(18),	internalBusMuxOut,     	BusMuxIn_PC);
+R1		: reg32 port map (clk, clr, internalRegEnableIn(1),		internalBusMuxOut,    	BusMuxIn_R1);
+R2 	: reg32 port map (clk, clr, internalRegEnableIn(2),		internalBusMuxOut,   	BusMuxIn_R2);
+R3 	: reg32 port map (clk, clr, internalRegEnableIn(3),		internalBusMuxOut,   	BusMuxIn_R3);
+R4 	: reg32 port map (clk, clr, internalRegEnableIn(4),		internalBusMuxOut,   	BusMuxIn_R4);
+R5 	: reg32 port map (clk, clr, internalRegEnableIn(5),		internalBusMuxOut,   	BusMuxIn_R5);
+R6 	: reg32 port map (clk, clr, internalRegEnableIn(6),		internalBusMuxOut,   	BusMuxIn_R6);
+R7 	: reg32 port map (clk, clr, internalRegEnableIn(7),		internalBusMuxOut,   	BusMuxIn_R7);
+R8 	: reg32 port map (clk, clr, internalRegEnableIn(8),		internalBusMuxOut,   	BusMuxIn_R8);
+R9 	: reg32 port map (clk, clr, internalRegEnableIn(9),		internalBusMuxOut,  		BusMuxIn_R9);
+R10 	: reg32 port map (clk, clr, internalRegEnableIn(10),	internalBusMuxOut,  		BusMuxIn_R10);
+R11 	: reg32 port map (clk, clr, internalRegEnableIn(11),	internalBusMuxOut,  		BusMuxIn_R11);
+R12 	: reg32 port map (clk, clr, internalRegEnableIn(12),	internalBusMuxOut,  		BusMuxIn_R12);
+R13 	: reg32 port map (clk, clr, internalRegEnableIn(13),	internalBusMuxOut,  		BusMuxIn_R13);
+R14 	: reg32 port map (clk, clr, internalRegEnableIn(14),	internalBusMuxOut,  		BusMuxIn_R14);
+R15 	: reg32 port map (clk, clr, internalRegEnableIn(15),	internalBusMuxOut,  		BusMuxIn_R15);
+HI 	: reg32 port map (clk, clr, internalRegEnableIn(16),	internalBusMuxOut, 		BusMuxIn_HI);
+LO 	: reg32 port map (clk, clr, internalRegEnableIn(17),	internalBusMuxOut, 		BusMuxIn_LO);
+PC 	: reg32 port map (clk, clr, internalRegEnableIn(18),	internalBusMuxOut,     	BusMuxIn_PC);
 
 ---- IR Register ----
-IR		: reg32 port map (clk, clr, RegEnableIn(19), internalBusMuxOut, IRout);
+IR		: reg32 port map (clk, clr, internalRegEnableIn(19), internalBusMuxOut, internalIRout);
+IRout <= internalIRout;
 
 ---- MDR Register ----
-MDR	: regMDR port map (clk, clr, RegEnableIn(20),	MDRRead, internalBusMuxOut, Mdatain, BusMuxIn_MDR);
+MDR	: regMDR port map (clk, clr, internalRegEnableIn(20),	MDRRead, internalBusMuxOut, RAMout, BusMuxIn_MDR);
 
 ---- MAR Register ----
-MAR	: reg32 port map (clk, clr, RegEnableIn(21), internalBusMuxOut, open);
+MAR	: reg32 port map (clk, clr, internalRegEnableIn(21), internalBusMuxOut, MARout);
 
+---- Instantiate ALU ----
+DatapathAluPath : aluPath port map (clk, clr, 
+internalRegEnableIn(22), -- Yin
+internalRegEnableIn(23), -- Zin
+internalBusMuxOut, internalBusMuxOut, IncPC, aluOp, overflow, BusMuxIn_Zhigh, BusMuxIn_Zlow);
+
+---- Inport and Outport Registers ----
+Inreg		: reg32 port map (clk, clr, internalRegEnableIn(24), inport, BusMuxIn_Inport);
+OutReg	: reg32 port map (clk, clr, internalRegEnableIn(25), internalBusMuxOut, outport);
+
+---- CONFF ----
+confflogic : conff port map(clk, internalIRout(1 downto 0), internalBusMuxOut, conffout, internalRegEnableIn(26));
+
+---- RAM Instantiation ----
+RAMinfer	: RAM512 port map (BusMuxIn_MDR, MARout(8 downto 0), MDRWrite, MDRread, RAMout);
+
+---- Select and Encode Instantiation ----
+selectandencode : selectencode port map (internalIRout, Gra, Grb, Grc, rin, Rout, Baout, internalEncoderIn(15 downto 0), internalRegEnableIn(15 downto 0), C_sign_extended);
+
+internalEncoderIn(31 downto 16) <= encoderIn;
+internalRegEnableIn(31 downto 16) <= RegEnableIn;
 
 ---- Instantiate Encoder and Mux ----
 -- Number comments next to ports refer to which bit corresponds to that port in EncoderIn (ie. how to select that input as the output to BusMuxOut)
@@ -149,14 +188,9 @@ BusMuxIn_MDR, -- 21
 BusMuxIn_Inport, -- 22
 C_sign_extended, -- 23
 dummyInput, -- 24
-defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, encoderIn, internalBusMuxOut);
+defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, internalencoderIn, internalBusMuxOut);
 
----- Instantiate ALU ----
-DatapathAluPath : aluPath port map (clk, clr, 
-RegEnableIn(22), -- Yin
-RegEnableIn(23), -- Zin
-internalBusMuxOut, internalBusMuxOut, IncPC, aluOp, overflow, BusMuxIn_Zhigh, BusMuxIn_Zlow);
-
+---- Set testing outports to internal signals ----
 BusMuxOut <= internalBusMuxOut;
 R0out <= BusMuxIn_R0;
 R1out <= BusMuxIn_R1;

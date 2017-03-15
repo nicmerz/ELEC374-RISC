@@ -2,24 +2,25 @@
 
 #### RegEnable Numbers (which bits in RegEnable correspond to which registers' load enables)
 
-0 - 15: Registers 0 - 15, respectively
-16: HI
-17: LO
-18: PC
-19: IR
-20: MDR
-21: MAR
-22: Yin
-23: Zin
+0: HI <br />
+1: LO <br />
+2: PC <br />
+3: IR <br />
+4: MDR <br />
+5: MAR <br />
+6: Yin <br />
+7: Zin <br />
+8: Inreg <br />
+9: Outreg <br />
+10: ConFFReg <br />
 
 #### EncoderIn Numbers (which bits in EncoderIn correspond to which input is selected in the BusMux)
-0 - 15: Registers 0 - 15, respectively
-16: BusMuxIn_HI
-17: BusMuxIn_LO
-18: BusMuxIn_Zhigh
-19: BusMuxIn_Zlow
-20: BusMuxIn_PC
-21: BusMuxIn_MDR
-22: BusMuxIn_Inport
-23: C_sign_extended
-24: dummyInput
+0: BusMuxIn_HI <br />
+1: BusMuxIn_LO <br />
+2: BusMuxIn_Zhigh <br />
+3: BusMuxIn_Zlow <br />
+4: BusMuxIn_PC <br />
+5: BusMuxIn_MDR <br />
+6: BusMuxIn_Inport <br />
+7: C_sign_extended <br />
+8: dummyInput <br />
