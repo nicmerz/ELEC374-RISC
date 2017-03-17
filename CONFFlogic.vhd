@@ -6,11 +6,11 @@ entity ConFF is
 
 port(
 
+	clk : in std_logic;
 	IRbits   : in  std_logic_vector(1 downto 0);
 	busmuxbits   : in  std_logic_vector(31 downto 0);
 	q	: out std_logic;
-	CONin : in std_logic;
-   clk : in std_logic
+	CONin : in std_logic
 
 );
 
@@ -41,7 +41,7 @@ architecture logic of ConFF is
 	
 	or_lt0 <= decoderOut(3) and busmuxbits(31);
 	
-	d_conFF <= or_0 or or_nonzero or or_gte0 or d_conFF;
+	d_conFF <= or_0 or or_nonzero or or_gte0 or or_lt0;
 	
 	ConFF : process(clk, CONin)
 	begin
