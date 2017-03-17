@@ -313,7 +313,7 @@ package my_components is
 		);
 	end component;
 	
-	component ConFF
+	component ConFFlogic
 		port(
 			clk : in std_logic;
 			IRbits   : in  std_logic_vector(1 downto 0);
