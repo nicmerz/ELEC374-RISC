@@ -1,10 +1,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity brzr_tb is
+entity brnz_tb is
 end;
 
-architecture logic of brzr_tb is
+architecture logic of brnz_tb is
 signal clk_tb : std_logic;
 signal clr_tb : std_logic;
 signal IncPC_tb	: std_logic;
@@ -158,7 +158,7 @@ begin
 			encoderIn_tb <= (others => '0');
 			RegEnable_tb <= (others => '0');
 		when Reg_load1 =>
-			dummyInput_tb <= x"00000025";
+			dummyInput_tb <= x"00000027";
 			RegEnable_tb <= (2  => '1', others => '0');
 			encoderIn_tb <= (8 => '1', others => '0');
 		when Reg_load2 =>
@@ -166,14 +166,14 @@ begin
 			RegEnable_tb <= (3 => '1', others => '0');
 			encoderIn_tb <= (8 => '1', others => '0');------
 	   when Reg_load3 =>
-			dummyInput_tb <= x"00000000";----set R6
+			dummyInput_tb <= x"00000001";----set R6
 			RegEnable_tb <= (others => '0');
 			encoderIn_tb <= (8 => '1', others => '0');------
 			Rout_tb <= '0';
 			Rin_tb <= '1';
 			Gra_tb <= '1';
 		when Reg_load4 =>
-			dummyInput_tb <= x"00000029";----set R5
+			dummyInput_tb <= x"0000002B";----set R5
 			RegEnable_tb <= (others => '0');
 			encoderIn_tb <= (8 => '1', others => '0');------
 			Gra_tb <= '0';
