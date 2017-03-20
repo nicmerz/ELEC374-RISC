@@ -47,9 +47,8 @@ entity datapath is
 		HIout			: out std_logic_vector(31 downto 0);
 		LOout			: out std_logic_vector(31 downto 0);
 		IRout			: out std_logic_vector(31 downto 0);
-		PCval		   : out std_logic_vector(31 downto 0); ---aded for testbenches
+		PCval		   : out std_logic_vector(31 downto 0); -- added for testbenches
 		Zout			: out std_logic_vector(63 downto 0)
-
 	);
 end entity;
 
@@ -214,6 +213,5 @@ LOout <= BusMuxIn_LO;
 Zout(63 downto 32) <= BusMuxIn_Zhigh;
 Zout(31 downto 0) <= BusMuxIn_Zlow;
 PCval <= BusMuxIn_PC; --- added for testing purposes
-
 
 end architecture;
