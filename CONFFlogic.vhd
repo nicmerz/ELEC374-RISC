@@ -10,7 +10,8 @@ port(
 	IRbits   : in  std_logic_vector(1 downto 0);
 	busmuxbits   : in  std_logic_vector(31 downto 0);
 	q	: out std_logic;
-	CONin : in std_logic
+	CONin : in std_logic;
+	reset : in std_logic
 
 );
 
@@ -49,7 +50,9 @@ architecture logic of ConFFlogic is
 		--if(clr = '0') then
 			--q <= (others => '0');
 		-- else, if rising edge
-		if(clk'EVENT and clk = '1') then
+		if (reset = '0') then
+			q <= '0';
+		elsif(clk'EVENT and clk = '1') then
 			if(CONin = '1') then
 				q <= d_conFF;
 			end if;

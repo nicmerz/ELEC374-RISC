@@ -319,7 +319,8 @@ package my_components is
 			IRbits   : in  std_logic_vector(1 downto 0);
 			busmuxbits   : in  std_logic_vector(31 downto 0);
 			q	: out std_logic;
-			CONin : in std_logic
+			CONin : in std_logic;
+			reset: std_logic
 		);
 	end component;
 	

@@ -149,7 +149,7 @@ Inreg		: reg32 port map (clk, clr, internalRegEnableIn(24), inport, BusMuxIn_Inp
 OutReg	: reg32 port map (clk, clr, internalRegEnableIn(25), internalBusMuxOut, outport);
 
 ---- CONFF ----
-confflogic_a : confflogic port map(clk, internalIRout(1 downto 0), internalBusMuxOut, conffout, internalRegEnableIn(26));
+confflogic_a : confflogic port map(clk, internalIRout(1 downto 0), internalBusMuxOut, conffout, internalRegEnableIn(26), clr);
 
 ---- RAM Instantiation ----
 RAMinfer	: RAM512 port map (BusMuxIn_MDR, MARout(8 downto 0), MDRWrite, MDRread, RAMout);
