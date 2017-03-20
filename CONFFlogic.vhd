@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
-entity ConFF is
+entity ConFFlogic is
 
 port(
 
@@ -16,7 +16,7 @@ port(
 
 end entity;
 
-architecture logic of ConFF is
+architecture logic of ConFFlogic is
 
 	signal d_conFF :std_logic;
 
