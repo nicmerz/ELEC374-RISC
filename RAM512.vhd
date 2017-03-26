@@ -12,7 +12,8 @@ entity RAM512 is
       address	: in std_logic_vector(8 downto 0);
       wren	: in std_logic;
 		rden	: in std_logic;
-      q	: out std_logic_vector(31 downto 0)
+      q	: out std_logic_vector(31 downto 0);
+		RAMcontents : out mem
    );
 end entity;
 architecture logic of RAM512 is
@@ -21,6 +22,7 @@ begin
 process (wren, rden, address, data, ram_block)
 begin
 q <= (others => '0');
+RAMcontents <= ram_block;
 if(wren = '1') then
 	ram_block(to_integer(unsigned(address))) <= data;
 elsif(rden = '1') then

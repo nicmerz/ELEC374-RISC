@@ -3,28 +3,14 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
 use work.my_components.all;
+use work.mem_init.all;
 
 entity datapath is
 	PORT (
 		clk			: in std_logic;
-		clr		: in std_logic;
-		IncPC			: in std_logic;
-		encoderIn	: in std_logic_vector(15 downto 0);
-		RegEnableIn : in std_logic_vector(15 downto 0);
 		---- The purpose of this input is for testbenching; it can easily set initial register values ----
-		dummyInput	: in std_logic_vector(31 downto 0);
-		MDRRead		: in std_logic;
-		MDRWrite		: in std_logic;
-		Baout			: in std_logic;
-		Gra			: in std_logic;
-		Grb			: in std_logic;
-		Grc			: in std_logic;
-		Rin			: in std_logic;
-		Rout			: in std_logic;
-		aluOp			: in std_logic_vector(4 downto 0);
 		inport		: in std_logic_vector(31 downto 0);
 		outport		: out std_logic_vector(31 downto 0);
-		conffout		: out std_logic;
 		
 		---- Outputports for testing purposes ----
 		BusMuxOut	: out std_logic_vector(31 downto 0);
@@ -48,7 +34,17 @@ entity datapath is
 		LOout			: out std_logic_vector(31 downto 0);
 		IRout			: out std_logic_vector(31 downto 0);
 		PCval		   : out std_logic_vector(31 downto 0); -- added for testbenches
-		Zout			: out std_logic_vector(63 downto 0)
+		Zout			: out std_logic_vector(63 downto 0);
+		MDRval		: out std_logic_vector(31 downto 0);
+		MARval		: out std_logic_vector(31 downto 0);
+		
+		---- Phase 3 Ports ----
+		rst			: in std_logic;
+		stop			: in std_logic;
+		run			: out std_logic;
+		
+		Stateout		: out State;
+		RAMcontents : out mem
 	);
 end entity;
 
@@ -95,15 +91,34 @@ signal overflow : std_logic;
 signal MARout	: std_logic_vector(31 downto 0);
 signal RAMout	: std_logic_vector(31 downto 0);
 
----- Select and Encode Signals
+---- Select and Encode Signals ----
 signal internalEncoderIn	: std_logic_vector(31 downto 0);
 signal internalRegEnableIn : std_logic_vector(31 downto 0);
 signal internalIRout			: std_logic_vector(31 downto 0);
+
+---- Control Signals ----
+signal MDRRead		: std_logic;
+signal MDRWrite	: std_logic;
+signal Baout		: std_logic;
+signal Gra			: std_logic;
+signal Grb			: std_logic;
+signal Grc			: std_logic;
+signal Rin			: std_logic;
+signal Rout			: std_logic;
+signal aluOp		: std_logic_vector(4 downto 0);
+signal IncPC		: std_logic;
+signal conffout	: std_logic;
+
+---- Output clear from control unit/input to registers ----
+signal clr : std_logic;
 
 begin
 
 ---- Set default values, to get rid of compiler warnings ----
 defaultSig <= (others => '0');
+
+---- Instantiate Control Unit ----
+control : control_unit port map (clk, rst, stop, conffout, internalIRout, Gra, Grb, Grc, Rin, Rout, BAout, internalEncoderIn(31 downto 16), internalRegEnableIn(31 downto 16), MDRRead, MDRWrite, IncPC, run, clr, aluOp, Stateout);
 		
 reg0 	: r0 port map (clk, clr, internalRegEnableIn(0), internalBusMuxOut, Baout, BusMuxIn_R0);
 
@@ -130,7 +145,6 @@ PC 	: reg32 port map (clk, clr, internalRegEnableIn(18),	internalBusMuxOut,     
 
 ---- IR Register ----
 IR		: reg32 port map (clk, clr, internalRegEnableIn(19), internalBusMuxOut, internalIRout);
-IRout <= internalIRout;
 
 ---- MDR Register ----
 MDR	: regMDR port map (clk, clr, internalRegEnableIn(20),	MDRRead, internalBusMuxOut, RAMout, BusMuxIn_MDR);
@@ -152,13 +166,10 @@ OutReg	: reg32 port map (clk, clr, internalRegEnableIn(25), internalBusMuxOut, o
 confflogic_a : confflogic port map(clk, internalIRout(1 downto 0), internalBusMuxOut, conffout, internalRegEnableIn(26), clr);
 
 ---- RAM Instantiation ----
-RAMinfer	: RAM512 port map (BusMuxIn_MDR, MARout(8 downto 0), MDRWrite, MDRread, RAMout);
+RAMinfer	: RAM512 port map (BusMuxIn_MDR, MARout(8 downto 0), MDRWrite, MDRread, RAMout, RAMcontents);
 
 ---- Select and Encode Instantiation ----
 selectandencode : selectencode port map (internalIRout, Gra, Grb, Grc, rin, Rout, Baout, internalEncoderIn(15 downto 0), internalRegEnableIn(15 downto 0), C_sign_extended);
-
-internalEncoderIn(31 downto 16) <= encoderIn;
-internalRegEnableIn(31 downto 16) <= RegEnableIn;
 
 ---- Instantiate Encoder and Mux ----
 -- Number comments next to ports refer to which bit corresponds to that port in EncoderIn (ie. how to select that input as the output to BusMuxOut)
@@ -187,7 +198,7 @@ BusMuxIn_PC, -- 20
 BusMuxIn_MDR, -- 21
 BusMuxIn_Inport, -- 22
 C_sign_extended, -- 23
-dummyInput, -- 24
+defaultSig,
 defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, defaultSig, internalencoderIn, internalBusMuxOut);
 
 ---- Set testing outports to internal signals ----
@@ -212,6 +223,9 @@ HIout <= BusMuxIn_HI;
 LOout <= BusMuxIn_LO;
 Zout(63 downto 32) <= BusMuxIn_Zhigh;
 Zout(31 downto 0) <= BusMuxIn_Zlow;
+IRout <= internalIRout;
 PCval <= BusMuxIn_PC; --- added for testing purposes
+MDRval <= BusMuxIn_MDR;
+MARval <= MARout;
 
 end architecture;
